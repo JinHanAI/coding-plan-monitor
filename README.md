@@ -1,5 +1,9 @@
 # AI Coding Plan Monitor | AI 编程套餐用量监控
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-blue.svg)](https://www.typescriptlang.org/)
+
 [English](#english) | [中文](#中文)
 
 ---
@@ -223,3 +227,34 @@ ai-usage config list
 ### License
 
 MIT
+
+---
+
+## Contributing | 贡献指南
+
+Contributions are welcome! Feel free to submit issues or pull requests.
+
+欢迎贡献代码！请随时提交 Issue 或 Pull Request。
+
+### Development | 开发
+
+```bash
+# Clone the repo
+git clone https://github.com/JinHanAI/coding-plan-monitor.git
+cd coding-plan-monitor
+
+# Install dependencies
+npm install
+
+# Run in development mode
+npm run dev
+
+# Build
+npm run build
+```
+
+## Acknowledgements | 致谢
+
+- [MiniMax](https://www.minimaxi.com/) - AI Model Provider
+- [智谱 AI](https://open.bigmodel.cn/) - GLM Model Provider
+- Built with [Claude Code](https://claude.ai/code)

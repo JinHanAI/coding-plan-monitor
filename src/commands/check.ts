@@ -107,15 +107,18 @@ function displayProviderUsage(displayName: string, usage: UsageData): void {
     // Token 5-hour window
     const tokenPercent = formatPercentage(usage.percentage);
     const tokenBar = formatProgressBar(usage.percentage);
+    // When usage is 0% with no reset time, show "暂无" (no active window) instead of "未知"
+    const windowResetDisplay = usage.windowResetTime || (usage.percentage === 0 ? '暂无' : '未知');
     console.log(chalk.bold.cyan('║') + `  ├── Token 5小时窗口: ${tokenBar} ${tokenPercent}`);
-    console.log(chalk.bold.cyan('║') + `  │                    (重置: ${usage.windowResetTime || '未知'})`);
+    console.log(chalk.bold.cyan('║') + `  │                    (重置: ${windowResetDisplay})`);
 
     // MCP monthly quota
     if (usage.monthlyUsage !== undefined) {
       const monthlyPercent = formatPercentage(usage.monthlyUsage);
       const monthlyBar = formatProgressBar(usage.monthlyUsage);
+      const monthlyResetDisplay = usage.monthlyResetTime || (usage.monthlyUsage === 0 ? '暂无' : '未知');
       console.log(chalk.bold.cyan('║') + `  └── MCP 月度额度: ${monthlyBar} ${monthlyPercent}`);
-      console.log(chalk.bold.cyan('║') + `                       (重置: ${usage.monthlyResetTime || '未知'})`);
+      console.log(chalk.bold.cyan('║') + `                       (重置: ${monthlyResetDisplay})`);
     }
   } else {
     // MiniMax uses count-based display

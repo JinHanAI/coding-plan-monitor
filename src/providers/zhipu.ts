@@ -176,10 +176,11 @@ export class ZhipuProvider extends BaseProvider {
       }
 
       // Format reset times
-      const timeResetTime = timeLimit?.nextResetTime
+      // Use explicit null/undefined check — nextResetTime can be 0 when no active window
+      const timeResetTime = timeLimit?.nextResetTime != null && timeLimit.nextResetTime > 0
         ? this.formatTimestamp(timeLimit.nextResetTime)
         : '';
-      const tokenResetTime = tokenLimit?.nextResetTime
+      const tokenResetTime = tokenLimit?.nextResetTime != null && tokenLimit.nextResetTime > 0
         ? this.formatTimestamp(tokenLimit.nextResetTime)
         : '';
 

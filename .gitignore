@@ -23,5 +23,8 @@ Thumbs.db
 *.log
 npm-debug.log*
 
+# Cache
+.cache/
+
 # Config (sensitive data stored in ~/.ai-usage-tracker/)
 config/.env

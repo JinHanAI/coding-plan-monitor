@@ -4,10 +4,14 @@
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-blue.svg)](https://www.typescriptlang.org/)
 
-> ⚠️ **项目状态**：智谱 GLM 功能暂缓 - 等待官方开放公开 API
->
-> 由于智谱的反爬虫机制限制，CLI 工具无法自动获取用量数据。
-> 详见 [智谱 GLM 功能说明](#智谱-glm-功能说明)
+## 📢 平台支持状态 | Platform Status
+
+| 平台 | 状态 | 说明 |
+|------|------|------|
+| **MiniMax** | ✅ 正常可用 | 通过官方 API 查询 |
+| **智谱 GLM** | ⏸️ 暂不可用 | 智谱启用了反爬虫机制，CLI 无法自动获取数据，请[手动访问网页查询](https://open.bigmodel.cn/usercenter/glm-coding/usage) |
+
+> 💡 **智谱用户**：由于智谱的用量查询接口不支持 API Key 认证，且有严格的反爬虫检测，本工具暂时无法获取智谱的用量数据。建议直接访问 [智谱用量统计页面](https://open.bigmodel.cn/usercenter/glm-coding/usage) 查看您的用量。详见 [智谱 GLM 功能说明](#智谱-glm-功能说明)。
 
 [English](#english) | [中文](#中文)
 
@@ -19,13 +23,22 @@
 
 A command-line tool to monitor AI Coding Plan usage for **MiniMax M2.5** and **智谱 GLM (Zhipu GLM)**.
 
+> ⚠️ **Note**: Zhipu GLM feature is currently unavailable due to anti-bot protection. Please check usage manually at https://open.bigmodel.cn/usercenter/glm-coding/usage
+
+### Platform Status
+
+| Platform | Status |
+|----------|--------|
+| MiniMax | ✅ Working |
+| Zhipu GLM | ⏸️ Unavailable (anti-bot protection) |
+
 ### Features
 
-- ✅ Check usage for all platforms with one command
+- ✅ Check MiniMax usage with one command
 - ✅ Real-time usage display with progress bars
 - ✅ Continuous monitoring mode (refreshes every 10 minutes)
 - ✅ Desktop notifications when usage exceeds 90% threshold
-- ✅ Secure local storage for API keys and cookies
+- ✅ Secure local storage for API keys
 
 ### Installation
 
@@ -75,6 +88,11 @@ ai-usage config list
 
 #### 智谱 GLM Cookie
 
+> ⚠️ **暂不可用**：智谱启用了反爬虫机制，CLI 无法自动获取数据。请直接访问 [网页版](https://open.bigmodel.cn/usercenter/glm-coding/usage) 查询用量。
+
+<details>
+<summary>配置方法（备用，待官方开放 API 后可用）</summary>
+
 1. Visit https://open.bigmodel.cn and login
 2. Press F12 to open Developer Tools
 3. Switch to "Network" tab
@@ -82,6 +100,8 @@ ai-usage config list
 5. Click any request and find "Cookie" in Request Headers
 6. Copy the full Cookie value
 7. Run: `ai-usage config set zhipu_cookie "<your-cookie>"`
+
+</details>
 
 ### Output Example
 
@@ -127,6 +147,15 @@ ai-usage config list
 ## 中文
 
 一个用于监控 **MiniMax M2.5** 和 **智谱 GLM** 编程套餐用量的命令行工具。
+
+### 平台支持状态
+
+| 平台 | 状态 | 说明 |
+|------|------|------|
+| **MiniMax** | ✅ 正常可用 | 通过官方 API 查询 |
+| **智谱 GLM** | ⏸️ 暂不可用 | 智谱启用了反爬虫机制，CLI 无法自动获取数据 |
+
+> 💡 **智谱用户**：建议直接访问 [智谱用量统计页面](https://open.bigmodel.cn/usercenter/glm-coding/usage) 查看您的用量。
 
 ### 功能特性
 
@@ -184,6 +213,11 @@ ai-usage config list
 
 #### 智谱 GLM Cookie
 
+> ⚠️ **暂不可用**：智谱启用了反爬虫机制，CLI 无法自动获取数据。请直接访问 [网页版](https://open.bigmodel.cn/usercenter/glm-coding/usage) 查询用量。
+
+<details>
+<summary>配置方法（备用，待官方开放 API 后可用）</summary>
+
 1. 访问 https://open.bigmodel.cn 并登录
 2. 按 F12 打开开发者工具
 3. 切换到「网络」标签页
@@ -191,6 +225,8 @@ ai-usage config list
 5. 点击任意请求，在「请求标头」中找到 Cookie
 6. 复制完整的 Cookie 值
 7. 运行: `ai-usage config set zhipu_cookie "<你的-cookie>"`
+
+</details>
 
 ### 输出示例
 

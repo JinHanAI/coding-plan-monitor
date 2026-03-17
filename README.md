@@ -4,6 +4,11 @@
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-blue.svg)](https://www.typescriptlang.org/)
 
+> ⚠️ **项目状态**：智谱 GLM 功能暂缓 - 等待官方开放公开 API
+>
+> 由于智谱的反爬虫机制限制，CLI 工具无法自动获取用量数据。
+> 详见 [智谱 GLM 功能说明](#智谱-glm-功能说明)
+
 [English](#english) | [中文](#中文)
 
 ---
@@ -258,3 +263,138 @@ npm run build
 - [MiniMax](https://www.minimaxi.com/) - AI Model Provider
 - [智谱 AI](https://open.bigmodel.cn/) - GLM Model Provider
 - Built with [Claude Code](https://claude.ai/code)
+
+---
+
+## 智谱 GLM 功能说明
+
+> 📅 调查日期：2026-03-17
+
+### 当前状态：暂缓
+
+智谱 GLM 的用量查询功能目前已**暂缓开发**，原因是智谱平台没有公开支持 API Key 认证的用量查询接口。
+
+### 调查过程
+
+我们尝试了以下方案来获取智谱的用量数据：
+
+#### 1. 直接调用 API（失败）
+
+```bash
+# 尝试的端点
+curl -H "Authorization: Bearer $TOKEN" \
+     "https://open.bigmodel.cn/api/monitor/usage/quota/limit"
+# 结果：返回空响应（HTTP 200，但 body 为空）
+```
+
+智谱的 API 端点会检测请求来源，非浏览器环境的请求会被阻止。
+
+#### 2. Puppeteer 浏览器自动化（失败）
+
+使用 Puppeteer 启动 headless Chrome 来模拟浏览器请求：
+
+```javascript
+const browser = await puppeteer.launch({ headless: true });
+const page = await browser.newPage();
+// 设置 Cookie，调用 API...
+```
+
+**结果**：仍然被反爬虫检测，返回空响应。
+
+#### 3. Playwright 浏览器自动化（失败）
+
+切换到 Playwright 框架：
+
+```javascript
+const browser = await chromium.launch({ headless: true });
+// ...
+```
+
+**结果**：同样被检测，返回空响应。
+
+#### 4. Chrome DevTools Protocol（可行但复杂）
+
+连接到用户已登录的 Chrome 浏览器：
+
+```bash
+# 启动 Chrome 调试模式
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+  --remote-debugging-port=9222 \
+  --user-data-dir=~/chrome-debug-profile
+```
+
+```javascript
+// 通过 CDP 连接
+const browser = await chromium.connectOverCDP('http://localhost:9222');
+```
+
+**结果**：✅ 可以成功获取数据，但需要用户：
+1. 每次使用前启动 Chrome 调试模式
+2. 在调试窗口中登录智谱账号
+3. 保持 Chrome 运行
+
+这个方案**使用成本较高**，不适合日常 CLI 工具使用。
+
+### 根本原因
+
+智谱的用量查询 API (`/api/monitor/usage/quota/limit`) 设计上：
+
+1. **不支持 API Key 认证**：只能通过浏览器 Cookie 认证
+2. **有严格的反爬虫检测**：检测 User-Agent、浏览器指纹、请求模式等
+3. **拒绝自动化工具**：即使是真实的 Chrome headless 模式也会被检测
+
+### API 响应示例
+
+当在浏览器中成功调用时，API 返回：
+
+```json
+{
+  "code": 200,
+  "msg": "操作成功",
+  "data": {
+    "limits": [
+      {
+        "type": "TIME_LIMIT",
+        "percentage": 33,
+        "nextResetTime": 1774663282997
+      },
+      {
+        "type": "TOKENS_LIMIT",
+        "percentage": 32,
+        "nextResetTime": 1773734366338
+      }
+    ],
+    "level": "pro"
+  },
+  "success": true
+}
+```
+
+### 后续计划
+
+等待智谱官方开放以下能力后再更新：
+
+- [ ] 支持 API Key 认证的用量查询接口
+- [ ] 官方开发者 API 文档中的用量查询端点
+- [ ] 或者提供 OAuth 授权方式
+
+### 临时解决方案
+
+目前建议用户**手动登录网页查询**：
+
+1. 访问 https://open.bigmodel.cn/usercenter/glm-coding/usage
+2. 登录后查看用量统计页面
+3. 页面会显示：
+   - 每5小时使用额度（Token 窗口）
+   - MCP 每月额度
+   - 重置时间
+
+---
+
+## 更新日志
+
+### 2026-03-17
+
+- 🔍 调查智谱 GLM 用量查询功能
+- ❌ 确认智谱无公开 API，暂缓该功能
+- 📝 记录调查过程和尝试的方案
